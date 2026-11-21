@@ -4,6 +4,15 @@
 
 **⚠️ 非官方工具**：本项目与腾讯 WorkBuddy / CodeBuddy 官方及 workbuddy-switch 原作者均无隶属关系，仅供个人效率与研究用途。
 
+## 界面预览
+
+*（截图为演示数据）*
+
+| 账号管理 | 用量统计 · 积分视角 |
+|---|---|
+| ![账号管理](docs/screenshots/accounts.png) | ![用量统计-积分视角](docs/screenshots/usage-credits.png) |
+| ![用量统计-Token视角](docs/screenshots/usage-token.png) | 桌面伙伴宠物栏、限额台账等更多界面请下载体验 |
+
 ---
 
 ## 它解决什么问题

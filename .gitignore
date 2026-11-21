@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# 构建产物（exe 发布到 GitHub Releases，不进仓库）
+build/
+dist/
+_build/dist/
+_build/build/
+*.exe
+
+# 运行时生成的个人数据（绝不入库）
+memory-brain/
+backups/
+bridge/
+inbox/
+wb_accounts_export/
+wb_session_backups/
+*.db
+*.db-journal
+*.db-wal
+
+# 备份与临时
+*.bak
+*.log
+_test_*
+_tmp/
+_tmp*
+
+# 编辑器/系统
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

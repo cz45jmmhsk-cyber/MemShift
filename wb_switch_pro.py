@@ -2234,7 +2234,7 @@ def rotate_cli_account():
 
 
 APP_NAME = "忆迁 MemShift"
-APP_VER = "v2.9.0"
+APP_VER = "v2.9.1"
 FONT_DIR = os.environ.get("MEMSHIFT_FONT_DIR") or os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "_fonts")
 if not os.path.isdir(FONT_DIR) and hasattr(sys, "_MEIPASS"):
@@ -3322,20 +3322,26 @@ function renderSyncTab(){
     :'<div class="mut" style="padding:14px">当前账号还没有与「'+esc(SW.name)+'」关联的会话。去「复制会话」标签勾选要带过去的会话，复制后自动建立关联。</div>';
   $('mSelAllSync').checked=linked.length&&SW.syncSel.size===linked.filter(s=>s.syncable).length;
 }
+let GRP_OPEN={space:true,task:false};
 function renderCopyTab(){
   const copyable=SW.sessions.filter(s=>!s.linked&&s.hasHistory);
   const tasks=copyable.filter(s=>!s.isPlayground), spaces=copyable.filter(s=>s.isPlayground);
   const grp=(label,disp,arr)=>{
     if(!arr.length)return '';
-    return '<div class="mlist"><div class="ghead" onclick="tgGrp(\''+label+'\')"><label style="display:flex;gap:8px;align-items:center;flex:1">'
-      +'<input type="checkbox" id="grp_'+label+'" onchange="tgGrpAll(\''+label+'\')"> '+disp+'（'+arr.length+'）</label><span>▸</span></div>'
-      +arr.map(s=>'<div class="li"><label><input type="checkbox" '+(SW.copySel.has(s.id)?'checked':'')
+    const open=GRP_OPEN[label]!==false;
+    return '<div class="mlist"><div class="ghead" onclick="tgGrpFold(\''+label+'\')"><label style="display:flex;gap:8px;align-items:center;flex:1" onclick="event.stopPropagation()">'
+      +'<input type="checkbox" id="grp_'+label+'" onchange="tgGrpAll(\''+label+'\')"> '+disp+'（'+arr.length+'）</label><span>'+(open?'▾':'▸')+'</span></div>'
+      +(open?arr.map(s=>'<div class="li"><label><input type="checkbox" '+(SW.copySel.has(s.id)?'checked':'')
         +' onchange="tgCopy(\''+s.id+'\')">​</label><div style="flex:1;min-width:0"><div class="t">'+esc(s.title)+'</div>'
-        +'<div class="sub">最近活动 '+fmtT(s.updatedAt)+'</div></div></div>').join('')+'</div>';
+        +'<div class="sub">最近活动 '+fmtT(s.updatedAt)+'</div></div></div>').join(''):'')+'</div>';
   };
-  $('mCopyList').innerHTML=copyable.length?(grp('task','任务',tasks)+grp('space','空间',spaces))
+  $('mCopyList').innerHTML=copyable.length?(grp('space','对话（真实会话）',spaces)+grp('task','自动化任务',tasks))
     :'<div class="mut" style="padding:14px">当前账号没有可复制的会话（没有正文内容的会话不在列表里）。</div>';
   syncGrpBox('task',tasks);syncGrpBox('space',spaces);
+}
+function tgGrpFold(label){
+  GRP_OPEN[label]=(GRP_OPEN[label]===false);
+  renderCopyTab();
 }
 function syncGrpBox(label,arr){
   const b=$('grp_'+label);if(!b||!arr.length)return;
